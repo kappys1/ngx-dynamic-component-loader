@@ -6,6 +6,12 @@
     "name": "Alejandro Marcos Gutierrez",
     "email": "alexsbd1@gmail.com"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kappys1/ngx-dynamic-component-loader"
+  },
+  "license": "MIT",
+  "homepage": "https://kappys1.github.io/ngx-dynamic-component-loader/",
   "keywords": [
     "loader",
     "dynamic",
