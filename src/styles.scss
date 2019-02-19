@@ -1,1 +1,28 @@
 /* You can add global styles to this file, and also import other style files */
+@import "theme/variables";
+
+body,
+html{
+  font-family: 'Roboto', sans-serif;
+  font-size: 62.5%;
+}
+
+app-root {
+  font-size: 1.6rem;
+}
+
+
+
+button{
+  font-size: 1.5rem;
+  border: 0px;
+  color: white;
+  background-color: #007bff;
+  padding: .5em 1em;
+}
+
+input{
+  font-size: 1.5rem;
+  border: 1px solid #007bff;
+  padding: .5em 1em;
+}

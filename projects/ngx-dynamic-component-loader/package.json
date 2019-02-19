@@ -1,0 +1,24 @@
+{
+  "name": "ngx-dynamic-component-loader",
+  "version": "0.0.1",
+  "description": "Library for loader your component from controller, service, etc...",
+  "author": {
+    "name": "Alejandro Marcos Gutierrez",
+    "email": "alexsbd1@gmail.com"
+  },
+  "keywords": [
+    "loader",
+    "dynamic",
+    "component",
+    "component loader",
+    "ngx",
+    "angular2",
+    "angular5",
+    "angualar7",
+    "simple"
+  ],
+  "peerDependencies": {
+    "@angular/common": "^7.1.0",
+    "@angular/core": "^7.1.0"
+  }
+}

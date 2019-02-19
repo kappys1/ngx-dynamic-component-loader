@@ -1,27 +1,80 @@
 # NgxDynamicComponentLoaderLib
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.1.3.
+> Library for loader your component from controller, service, etc...
 
-## Development server
+[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
+[![npm version](https://badge.fury.io/js/ngx-dynamic-component-loader.svg)](https://badge.fury.io/js/ngx-dynamic-component-loader)
+![Ngx](https://img.shields.io/badge/ngx-SUCCESS-blue.svg?style=flat)
+![licence](https://img.shields.io/badge/licence-MIT-blue.svg?style=flat)
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-## Code scaffolding
+# Install 👷🏼
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+```
+npm install ngx-dynamic-component-loader --save
+```
+## Examples  👯‍
 
-## Build
+[Here](https://kappys1.github.io/ngx-dynamic-component-loader/)
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+## Usage 🧙
 
-## Running unit tests
+1. Add Module
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+```
+  @NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    BrowserModule,
+    NgxDynamicComponentLoaderModule
+  ],
+  entryComponents: [SampleComponent],
+  providers: [],
+  bootstrap: [AppComponent]
+})
 
-## Running end-to-end tests
+**Don't forguet to add your Dynamic Components in entryComponents**
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+```
 
-## Further help
+2. You can use in your component
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+```
+  constructor(private dynamicComponentLoaderService: NgxDynamicComponentLoaderService) {
+
+  }
+
+
+  loadComponent(){
+    const component = SampleComponent;
+    const params = {} // params for initialize this component.
+
+    this.loaderComponentService.getComponent(component, params).then((val: DynamicComponent) => {
+      document.appendChild(val.componentView); // you have the DOM element and you can append in anywhere
+    })
+  }
+
+
+```
+
+
+## DynamicComponent Model 🕵🏼
+
+Result when your get the component.
+```
+DynamicComponent {
+  componentRef: ComponentRef<any>; // --> Component Reference
+  componentView: any; // --> DOM Reference
+  destroy() // --> Destroy the element from DOM and Ref.
+}
+
+```
+
+
+### Author
+Alex Marcos Gutierrez
+
+### License
+MIT

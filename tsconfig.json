@@ -17,6 +17,14 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "ngx-dynamic-component-loader": [
+        "dist/ngx-dynamic-component-loader"
+      ],
+      "ngx-dynamic-component-loader/*": [
+        "dist/ngx-dynamic-component-loader/*"
+      ]
+    }
   }
 }

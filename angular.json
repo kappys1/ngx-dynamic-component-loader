@@ -133,6 +133,41 @@
           }
         }
       }
+    },
+    "ngxDynamicComponentLoader": {
+      "root": "projects/ngx-dynamic-component-loader",
+      "sourceRoot": "projects/ngx-dynamic-component-loader/src",
+      "projectType": "library",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/ngx-dynamic-component-loader/tsconfig.lib.json",
+            "project": "projects/ngx-dynamic-component-loader/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ngx-dynamic-component-loader/src/test.ts",
+            "tsConfig": "projects/ngx-dynamic-component-loader/tsconfig.spec.json",
+            "karmaConfig": "projects/ngx-dynamic-component-loader/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/ngx-dynamic-component-loader/tsconfig.lib.json",
+              "projects/ngx-dynamic-component-loader/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "defaultProject": "ngx-dynamic-component-loader-lib"
