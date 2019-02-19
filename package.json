@@ -1,6 +1,6 @@
 {
   "name": "ngx-dynamic-component-loader-lib",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "author": {
     "name": "Alejandro Marcos Gutierrez",
     "email": "alexsbd1@gmail.com"
@@ -17,7 +17,7 @@
     "publish:latest": "node scripts/publish.js latest",
     "publish:first": "node scripts/publish.js '--release-as 1.0.0' first",
     "publish:release": "node scripts/publish.js '' major",
-    "publish:pre": "node scripts/publish.js '--release-as minor' prerelease",
+    "publish:pre": "node scripts/publish.js '--release-as minor' latest",
     "publish:alpha": "node scripts/publish.js '--prerelease alpha' patch"
   },
   "private": true,
