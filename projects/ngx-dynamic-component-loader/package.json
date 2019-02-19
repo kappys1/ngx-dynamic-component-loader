@@ -1,6 +1,6 @@
 {
   "name": "ngx-dynamic-component-loader",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Library for loader your component from controller, service, etc...",
   "author": {
     "name": "Alejandro Marcos Gutierrez",

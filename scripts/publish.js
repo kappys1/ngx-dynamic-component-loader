@@ -3,12 +3,12 @@
 const { readPackageJson, writePackageJson, serialCommands, changeDirectory } = require('./auxFunctions');
 const path = require('path');
 const pkgPath = path.join(process.cwd(), 'package.json');
-const pkgLibPath = path.join(process.cwd(), 'projects/ngx-modal/package.json');
+const pkgLibPath = path.join(process.cwd(), 'projects/ngx-dynamic-component-loader/package.json');
 
 const readmePath = path.join(process.cwd(), 'README.md');
-const readmePathDest = path.join(process.cwd(), 'dist/ngx-modal/README.md');
+const readmePathDest = path.join(process.cwd(), 'dist/ngx-dynamic-component-loader/README.md');
 const changelogPath = path.join(process.cwd(), 'CHANGELOG.md');
-const changelogPathDest = path.join(process.cwd(), 'dist/ngx-modal/CHANGELOG.md');
+const changelogPathDest = path.join(process.cwd(), 'dist/ngx-dynamic-component-loader/CHANGELOG.md');
 
 const fs = require('fs');
 
@@ -28,8 +28,9 @@ function newBuild(){
 }
 
 function updateVersion(type,paramsStandardVersion){
-    if(type === 'alpha' || type === 'prerelease' || type === 'release' || type === 'latest'){
+    if(type === 'alpha' || type === 'prerelease' || type === 'release' || type === 'latest'|| type === 'first'){
         log('   updating version ...');
+        log([`standard-version ${paramsStandardVersion}`]);
         return serialCommands([
                 ['standard-version', [paramsStandardVersion]]
             ]).then(async val => {
@@ -42,12 +43,12 @@ function updateVersion(type,paramsStandardVersion){
             })
     }
     else{
-        throw new Error('[sport-dl-theme] -> no es un tipo de version(alpha, prerelease, release)' )
+        throw new Error('[sport-dl-theme] -> no es un tipo de version(alpha, prerelease, release, latest, first)' )
     }
 }
 
 function publish(){
-    const paramsStandardVersion = process.argv[3] || 'prerelease';
+    const paramsStandardVersion = process.argv[2] || '';
     const type = process.argv[3] || 'prerelease';
     console.log(type,paramsStandardVersion);
     log('updating version ...');
@@ -56,10 +57,10 @@ function publish(){
         await serialCommands([
             ['git', ['push','--follow-tags', 'origin', 'master']],
         ])
-        changeDirectory('./dist/ngx-modal')
+        changeDirectory('./dist/ngx-dynamic-component-loader')
         log('Publishing...');
         return await serialCommands ([
-            ['npm ', [ 'publish', '--tag', type]]
+            ['npm ', [ 'publish', '--tag', type, '--registry', 'https://registry.npmjs.org']]
         ])
     })
 }
