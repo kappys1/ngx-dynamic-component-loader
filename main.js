@@ -81,6 +81,9 @@ var NgxDynamicComponentLoaderService = /** @class */ (function () {
         this.appRef = appRef;
         this.injector = injector;
     }
+    NgxDynamicComponentLoaderService.prototype.setRootViewContainerRef = function (viewContainerRef) {
+        this.rootViewContainer = viewContainerRef;
+    };
     NgxDynamicComponentLoaderService.prototype.loadComponent = function (component) {
         var componentRef = this.componentFactoryResolver
             .resolveComponentFactory(component);
@@ -97,16 +100,24 @@ var NgxDynamicComponentLoaderService = /** @class */ (function () {
             component.instance[key] = params[key];
         });
     };
-    NgxDynamicComponentLoaderService.prototype.getComponent = function (component, params) {
+    NgxDynamicComponentLoaderService.prototype.getComponent = function (dynamicComponent, params, viewContainer) {
         var _this = this;
+        if (viewContainer === void 0) { viewContainer = this.rootViewContainer; }
         return new Promise(function (resolve) {
-            setTimeout(function () {
-                var componentRef = _this.loadComponent(component).create(_this.injector);
-                _this.loadParams(componentRef, params);
-                var componentView = _this.loadView(componentRef);
-                var res = new _DynamicComponent__WEBPACK_IMPORTED_MODULE_1__["DynamicComponent"](componentRef, componentView);
-                resolve(res);
-            });
+            var view = !viewContainer ? viewContainer : _this.injector;
+            var factory = _this.loadComponent(dynamicComponent);
+            var component = viewContainer ? factory.create(view.parentInjector) : factory.create(view);
+            _this.loadParams(component, params);
+            if (viewContainer) {
+                viewContainer.insert(component.hostView);
+            }
+            else {
+                _this.appRef.attachView(component.hostView);
+            }
+            var domElem = component.hostView
+                .rootNodes[0];
+            var res = new _DynamicComponent__WEBPACK_IMPORTED_MODULE_1__["DynamicComponent"](component, domElem);
+            resolve(res);
         });
     };
     NgxDynamicComponentLoaderService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
@@ -180,7 +191,7 @@ webpackEmptyAsyncContext.id = "./src/$$_lazy_route_resource lazy recursive";
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!--The content below is only a placeholder and can be replaced.-->\n<header>\n  <h1>{{title}}</h1>\n</header>\n\n<main>\n  <section>\n    <header>\n      <h2>Install</h2>\n      <pre><code>npm install ngx-dynamic-component-loader --save</code></pre>\n  </header>\n  </section>\n  <section>\n    <header>\n        <h2>Documentation</h2>\n        <p><a target=\"_blank\" href=\"https://github.com/kappys1/ngx-dynamic-component-loader\">here.</a></p>\n    </header>\n  </section>\n  <section>\n    <header>\n      <h2>Examples</h2>\n      <p><a target=\"_blank\" href=\"https://github.com/kappys1/ngx-dynamic-component-loader/blob/master/src/app/app.component.ts\">see code here.</a></p>\n    </header>\n  </section>\n  <article>\n    <h3>Sample Component Append</h3>\n    <button (click)=\"loadComponent1()\">Append Sample Component</button>\n    <div #content1></div>\n  </article>\n  <article>\n    <h3>Sample Component 2 Append with params</h3>\n    <input [(ngModel)]=\"inputValue\">\n    <button (click)=\"loadComponent2()\">Append Sample Component</button>\n    <div #content2></div>\n  </article>\n</main>\n<footer>\n  {{year}} © {{title}}\n</footer>\n"
+module.exports = "<!--The content below is only a placeholder and can be replaced.-->\n<header>\n  <h1>{{title}}</h1>\n</header>\n\n<main>\n  <section>\n    <header>\n      <h2>Install</h2>\n      <pre><code>npm install ngx-dynamic-component-loader --save</code></pre>\n  </header>\n  </section>\n  <section>\n    <header>\n        <h2>Documentation</h2>\n        <p><a target=\"_blank\" href=\"https://github.com/kappys1/ngx-dynamic-component-loader\">here.</a></p>\n    </header>\n  </section>\n  <section>\n    <header>\n      <h2>Examples</h2>\n      <p><a target=\"_blank\" href=\"https://github.com/kappys1/ngx-dynamic-component-loader/blob/master/src/app/app.component.ts\">see code here.</a></p>\n    </header>\n  </section>\n  <article>\n    <h3>Sample Component Append</h3>\n    <button (click)=\"loadComponent1()\">Append Sample Component</button>\n    <div #content1></div>\n  </article>\n  <article>\n    <h3>Sample Component 2 in template with params</h3>\n    <input [(ngModel)]=\"inputValue\" />\n    <button (click)=\"loadComponent2()\">Append Sample Component</button>\n    <ng-template #dynamic></ng-template>\n  </article>\n</main>\n<footer>\n  {{year}} © {{title}}\n</footer>\n"
 
 /***/ }),
 
@@ -232,12 +243,10 @@ var AppComponent = /** @class */ (function () {
         });
     };
     AppComponent.prototype.loadComponent2 = function () {
-        var _this = this;
         var component = _components_example_second_component_example_second_component_component__WEBPACK_IMPORTED_MODULE_1__["ExampleSecondComponentComponent"];
         var params = { value: this.inputValue }; // params for initialize this component.
-        this.dynamicComponentLoaderService.getComponent(component, params).then(function (val) {
+        this.dynamicComponentLoaderService.getComponent(component, params, this.viewContainerRef).then(function (val) {
             val.componentRef.instance.removeComponent = function () { console.log('click'); val.destroy(); }; // Add Value into component in hot.
-            _this.content2.nativeElement.appendChild(val.componentView); // you have the DOM element and you can append in anywhere
         });
     };
     tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
@@ -248,6 +257,12 @@ var AppComponent = /** @class */ (function () {
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["ViewChild"])('content2'),
         tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", _angular_core__WEBPACK_IMPORTED_MODULE_2__["ElementRef"])
     ], AppComponent.prototype, "content2", void 0);
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["ViewChild"])('dynamic', {
+            read: _angular_core__WEBPACK_IMPORTED_MODULE_2__["ViewContainerRef"]
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", _angular_core__WEBPACK_IMPORTED_MODULE_2__["ViewContainerRef"])
+    ], AppComponent.prototype, "viewContainerRef", void 0);
     AppComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["Component"])({
             selector: 'app-root',
