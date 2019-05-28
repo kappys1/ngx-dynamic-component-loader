@@ -28,10 +28,10 @@
     <div #content1></div>
   </article>
   <article>
-    <h3>Sample Component 2 Append with params</h3>
-    <input [(ngModel)]="inputValue">
+    <h3>Sample Component 2 in template with params</h3>
+    <input [(ngModel)]="inputValue" />
     <button (click)="loadComponent2()">Append Sample Component</button>
-    <div #content2></div>
+    <ng-template #dynamic></ng-template>
   </article>
 </main>
 <footer>

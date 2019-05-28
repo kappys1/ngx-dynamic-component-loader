@@ -6,7 +6,13 @@ import { Injectable, Injector, ApplicationRef, ComponentFactoryResolver, Embedde
 })
 export class NgxDynamicComponentLoaderService {
 
+  rootViewContainer;
+
   constructor(private componentFactoryResolver: ComponentFactoryResolver, private appRef: ApplicationRef, private injector: Injector) { }
+
+  setRootViewContainerRef(viewContainerRef) {
+    this.rootViewContainer = viewContainerRef
+  }
 
   private loadComponent(component: any) {
 
@@ -33,17 +39,28 @@ export class NgxDynamicComponentLoaderService {
     });
   }
 
-  getComponent(component, params) {
+  getComponent(dynamicComponent, params , viewContainer = this.rootViewContainer) {
+
     return new Promise(resolve => {
-      setTimeout(() => {
-        const componentRef = this.loadComponent(component).create(this.injector);
-        this.loadParams(componentRef, params);
-        const componentView = this.loadView(componentRef);
+      const view = !viewContainer ? viewContainer : this.injector;
+      const factory = this.loadComponent(dynamicComponent)
+      const component = viewContainer ? factory.create(view.parentInjector) :  factory.create(view)
+      this.loadParams(component, params);
 
-        const res = new DynamicComponent(componentRef, componentView);
+      if(viewContainer) {
+        viewContainer.insert(component.hostView)
+      }
+      else {
+        this.appRef.attachView(component.hostView);
+      }
 
-        resolve(res);
-      });
+      const domElem = (component.hostView as EmbeddedViewRef<any>)
+        .rootNodes[0] as HTMLElement;
+
+      const res = new DynamicComponent(component, domElem);
+
+      resolve(res);
     });
+
   }
 }

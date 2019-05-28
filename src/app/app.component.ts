@@ -1,6 +1,6 @@
 import { ExampleSecondComponentComponent } from './components/example-second-component/example-second-component.component';
 import { DynamicComponent } from './../../projects/ngx-dynamic-component-loader/src/lib/DynamicComponent';
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component, ViewChild, ElementRef, ViewContainerRef } from '@angular/core';
 import { NgxDynamicComponentLoaderService } from 'projects/ngx-dynamic-component-loader/src/public_api';
 import { ExampleComponentComponent } from './components/example-component/example-component.component';
 
@@ -16,9 +16,11 @@ export class AppComponent {
   @ViewChild('content1') content: ElementRef;
   @ViewChild('content2') content2: ElementRef;
   inputValue = '';
-  constructor(private dynamicComponentLoaderService: NgxDynamicComponentLoaderService) {
+  @ViewChild('dynamic', {
+    read: ViewContainerRef
+  }) viewContainerRef: ViewContainerRef
 
-  }
+  constructor(private dynamicComponentLoaderService: NgxDynamicComponentLoaderService) {}
 
   loadComponent1() {
     const component = ExampleComponentComponent;
@@ -34,9 +36,9 @@ export class AppComponent {
     const component = ExampleSecondComponentComponent;
     const params = {value : this.inputValue}; // params for initialize this component.
 
-    this.dynamicComponentLoaderService.getComponent(component, params).then((val: DynamicComponent) => {
+    this.dynamicComponentLoaderService.getComponent(component, params, this.viewContainerRef).then((val: DynamicComponent) => {
       val.componentRef.instance.removeComponent = () => {console.log('click'); val.destroy() }; // Add Value into component in hot.
-      this.content2.nativeElement.appendChild(val.componentView); // you have the DOM element and you can append in anywhere
     });
   }
+
 }

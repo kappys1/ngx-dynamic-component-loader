@@ -8,9 +8,9 @@ const pkgLibPath = path.join(process.cwd(), 'projects/ngx-dynamic-component-load
 const readmePath = path.join(process.cwd(), 'README.md');
 const readmePathDest = path.join(process.cwd(), 'dist/ngx-dynamic-component-loader/README.md');
 const changelogPath = path.join(process.cwd(), 'CHANGELOG.md');
-const licencePath = path.join(process.cwd(), 'LICENSE');
+const licencsePath = path.join(process.cwd(), 'LICENSE');
 const changelogPathDest = path.join(process.cwd(), 'dist/ngx-dynamic-component-loader/CHANGELOG.md');
-const licencePathDest = path.join(process.cwd(), 'dist/ngx-dynamic-component-loader/LICENSE');
+const licensePathDest = path.join(process.cwd(), 'dist/ngx-dynamic-component-loader/LICENSE');
 
 const fs = require('fs');
 
@@ -26,7 +26,7 @@ function newBuild(){
         ]).then(async val => {
             await fs.copyFile(readmePath, readmePathDest,() => {});
             await fs.copyFile(changelogPath, changelogPathDest, () => {});
-            await fs.copyFile(licencePath, licencePathDest, () => {});
+            await fs.copyFile(licencsePath, licensePathDest, () => {});
         })
 }
 

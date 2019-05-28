@@ -35,9 +35,9 @@ npm install ngx-dynamic-component-loader --save
   bootstrap: [AppComponent]
 })
 
-**Don't forguet to add your Dynamic Components in entryComponents**
-
 ```
+
+**Don't forguet to add your Dynamic Components in entryComponents**
 
 2. You can use in your component
 
@@ -55,10 +55,30 @@ npm install ngx-dynamic-component-loader --save
       document.appendChild(val.componentView); // you have the DOM element and you can append in anywhere
     })
   }
+```
 
+1. You can use in ng-template
+```
 
 ```
 
+  <ng-template #dynamic></ng-template>
+  
+```
+
+  @ViewChild('dynamic', {
+    read: ViewContainerRef
+  }) viewContainerRef: ViewContainerRef
+
+  constructor(private dynamicComponentLoaderService: NgxDynamicComponentLoaderService) {}
+
+  loadComponent(){
+    const component = ExampleSecondComponentComponent;
+    const params = {value : this.inputValue}; // params for initialize this component.
+
+    this.dynamicComponentLoaderService.getComponent(component, params, this.viewContainerRef).then((val: DynamicComponent) => {});
+  }
+```
 
 ## DynamicComponent Model 🕵🏼
 
